@@ -77,7 +77,7 @@ def decode(options):
 
     # Print decoded_request dict
     for k,v in decoded_request.items():
-        if k != "Route":
+        if k != "Routes":
             if v:
                 if k == "Timestamp":
                     print(f"{k}: {v} ({time.ctime(v)})")
