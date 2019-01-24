@@ -55,6 +55,9 @@ def decode(options):
         'f': "Fallback",
         'h': "Description hash",
         'x': "Expiry (seconds)",
+        'p': "Payment hash",
+        'n': "Payee node",
+        'c': "Minimum final CLTV expiry",
     }
     def tags_by_name(name, tags):
         return [t[1] for t in tags if t[0] == name]
@@ -70,7 +73,7 @@ def decode(options):
 
     for k,v in all_tags.items():
         if tags_by_name(k, a.tags):
-            if k not in 'h':      # list all tags here to be hexlified
+            if k not in 'hpn':      # list all tags here to be hexlified
                 decoded_request[v] = tags_by_name(k, a.tags)[0]
             else:
                 decoded_request[v] = hexlify(tags_by_name(k, a.tags)[0])
