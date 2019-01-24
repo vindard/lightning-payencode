@@ -45,7 +45,10 @@ def encode(options):
 
 
 def decode(options):
-    a = lndecode(options.lnaddress, options.verbose)
+    try:
+        a = lndecode(options.lnaddress, options.verbose)
+    except AttributeError:
+        a = lndecode(options)
     all_tags = {
         'r': "Routes",
         'd': "Description",
