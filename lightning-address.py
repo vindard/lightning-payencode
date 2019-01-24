@@ -46,40 +46,53 @@ def encode(options):
 
 def decode(options):
     a = lndecode(options.lnaddress, options.verbose)
+    all_tags = {
+        'r': "Routes",
+        'd': "Description",
+        'f': "Fallback",
+        'h': "Description hash",
+        'x': "Expiry (seconds)",
+    }
     def tags_by_name(name, tags):
         return [t[1] for t in tags if t[0] == name]
 
-    print("Signed with public key:", hexlify(a.pubkey.serialize()))
-    print("Currency:", a.currency)
-    print("Payment hash:", hexlify(a.paymenthash))
-    if a.amount:
-        print("Amount:", a.amount)
-    print("Timestamp: {} ({})".format(a.date, time.ctime(a.date)))
+    # Build decoded_request dict
+    decoded_request = {
+        "Signed with public key": hexlify(a.pubkey.serialize()),
+        "Currency": a.currency,
+        "Payment hash": hexlify(a.paymenthash),
+        "Amount": a.amount,
+        "Timestamp": a.date,
+    }
 
-    for r in tags_by_name('r', a.tags):
-        print("Route: ",end='')
-        for step in r:
-            print("{}/{}/{}/{}/{} ".format(hexlify(step[0]), hexlify(step[1]), step[2], step[3], step[4]), end='')
-        print('')
-
-    fallback = tags_by_name('f', a.tags)
-    if fallback:
-        print("Fallback:", fallback[0])
-
-    description = tags_by_name('d', a.tags)
-    if description:
-        print("Description:", description[0])
-
-    dhash = tags_by_name('h', a.tags)
-    if dhash:
-        print("Description hash:", hexlify(dhash[0]))
-
-    expiry = tags_by_name('x', a.tags)
-    if expiry:
-        print("Expiry (seconds):", expiry[0])
+    for k,v in all_tags.items():
+        if tags_by_name(k, a.tags):
+            if k not in 'h':      # list all tags here to be hexlified
+                decoded_request[v] = tags_by_name(k, a.tags)[0]
+            else:
+                decoded_request[v] = hexlify(tags_by_name(k, a.tags)[0])
 
     for t in [t for t in a.tags if t[0] not in 'rdfhx']:
-        print("UNKNOWN TAG {}: {}".format(t[0], hexlify(t[1])))
+        decoded_request[f"UNKNOWN TAG {t[0]}"] = hexlify(t[1])
+
+    # Print decoded_request dict
+    for k,v in decoded_request.items():
+        if k != "Route":
+            if v:
+                if k == "Timestamp":
+                    print(f"{k}: {v} ({time.ctime(v)})")
+                else:
+                    print(f"{k}: {v}")
+
+    if 'Routes' in decoded_request.keys():
+        for r in decoded_request['Routes']:
+            print("Route: ",end='')
+            for step in r:
+                print("{}/{}/{}/{}/{} ".format(hexlify(step[0]), hexlify(step[1]), step[2], step[3], step[4]), end='')
+            print('')
+
+    return decoded_request
+
 
 parser = argparse.ArgumentParser(description='Encode lightning address')
 subparsers = parser.add_subparsers(dest='subparser_name',
