@@ -72,7 +72,7 @@ def decode(options):
             else:
                 decoded_request[v] = hexlify(tags_by_name(k, a.tags)[0])
 
-    for t in [t for t in a.tags if t[0] not in 'rdfhx']:
+    for t in [t for t in a.tags if t[0] not in all_tags.keys()]:
         decoded_request[f"UNKNOWN TAG {t[0]}"] = hexlify(t[1])
 
     # Print decoded_request dict
