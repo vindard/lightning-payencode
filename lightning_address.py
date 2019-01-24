@@ -90,9 +90,7 @@ def decode(options):
     if 'Routes' in decoded_request.keys():
         for r in decoded_request['Routes']:
             print("Route: ",end='')
-            for step in r:
-                print("{}/{}/{}/{}/{} ".format(hexlify(step[0]), hexlify(step[1]), step[2], step[3], step[4]), end='')
-            print('')
+            print(f"{hexlify(r[0])}/{hexlify(r[1])}/{r[2]}/{r[3]}/{r[4]}")
 
     return decoded_request
 
