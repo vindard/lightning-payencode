@@ -1,6 +1,7 @@
 from lightning_address import decode as decodepayreq
 import json
 
+# Invoices gotten from publicly shared #LNTrustChain on Twitter
 pay_req = [
             'lnbc8800u1pwysh8kpp5kln5lcht4la2aqg899qj4gyfnglfs3wg83wmjzlh7ak682t4suvqdqqcqzys26g2z8dtjzk3vl8eh22rq32kn7lvgrl554ggmma7mwr9e5wzgjfjk8rv0md493e8ua944pchq2supmglcpt6nk5cxs5ycsmplwgkawsqk2w5pa',
             'lnbc7100u1pwyd443pp56kmzrme7dfxc0aa9l3fr8x2uprhg8q4u3y8wnnrec9wp2davtayqdqhgd2zqjr0wss9qmm5v96x7ggcqzysfksldust8a0ph8jdcpk55hh205thv5w84n3w349gj5mrzh7pcfl4lgfa75ftnd84d5jfkpyrdxs5k64kfv6c86082rhzcdkrqcywmpspxh4th9',
