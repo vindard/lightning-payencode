@@ -2,6 +2,7 @@ from lightning_address import decode_func as decodepayreq
 import json, ast
 
 # Invoices gotten from publicly shared #LNTrustChain on Twitter
+# Assumes data format as csv format: twitter_handle, ln_invoice
 with open("filteredLNTrustChain.txt", 'r') as f: 
     data = ast.literal_eval(f.read())
 
