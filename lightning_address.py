@@ -44,7 +44,7 @@ def encode(options):
     print(lnencode(addr, options.privkey))
 
 
-def decode(options):
+def decode_func(options):
     try:
         a = lndecode(options.lnaddress, options.verbose)
     except AttributeError:
@@ -81,6 +81,9 @@ def decode(options):
     for t in [t for t in a.tags if t[0] not in all_tags.keys()]:
         decoded_request[f"UNKNOWN TAG {t[0]}"] = hexlify(t[1])
 
+    return decoded_request
+
+def print_decoded(decoded_request):
     # Print decoded_request dict
     for k,v in decoded_request.items():
         if k != "Routes":
@@ -95,7 +98,9 @@ def decode(options):
             print("Route: ",end='')
             print(f"{hexlify(r[0])}/{hexlify(r[1])}/{r[2]}/{r[3]}/{r[4]}")
 
-    return decoded_request
+def decode(options):
+    decoded_request = decode_func(options)
+    print_decoded(decoded_request)
 
 
 parser = argparse.ArgumentParser(description='Encode lightning address')
